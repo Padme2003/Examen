@@ -9,11 +9,10 @@ export class CursosController {
   @Get()
   getAll() {
     const cursos = this.cursosService.obtenerTodos();
-    // Convierte los datos a texto
     const cursosTexto = cursos.map(curso => 
       `ID: ${curso.id} | Título: ${curso.titulo} | Categoría: ${curso.categoria} | Estado: ${curso.estado} | Instructor: ${curso.instructorId}`
     ).join('\n');
-    return cursosTexto; // Devuelve los cursos como texto
+    return cursosTexto;
   }
 
   @Get('categoria/:categoria')
@@ -37,13 +36,12 @@ export class CursosController {
   @Get(':id')
   getById(@Param('id') id: string) {
     const curso = this.cursosService.buscarPorId(id);
-    // Convertir a texto
     return `ID: ${curso.id} | Título: ${curso.titulo} | Categoría: ${curso.categoria} | Estado: ${curso.estado} | Instructor: ${curso.instructorId}`;
   }
 
   @Post()
-  create(@Body() data: Omit<Curso, 'id' | 'inscritos'>) {
-    return this.cursosService.crearCurso(data);
+  create(@Body() data: Omit<Curso, 'inscritos'>) {
+    return this.cursosService.crearCurso(data); // Ahora el ID debe ser parte del cuerpo de la solicitud
   }
 
   @Put(':id')
