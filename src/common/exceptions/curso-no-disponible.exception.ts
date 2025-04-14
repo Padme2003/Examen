@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 
-export class CursoProhibidoException extends HttpException {
+export class CursoInscripcionException extends HttpException {
   constructor() {
-    super('Acceso prohibido a este curso', HttpStatus.FORBIDDEN);
+    super('Error personalizado al inscribir al curso', HttpStatus.CONFLICT);
   }
 }

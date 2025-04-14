@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, BadRequestException, ConflictException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, ConflictException, InternalServerErrorException } from '@nestjs/common';
 import { Curso, EstadoCurso } from './entities/curso.entity';
 
 @Injectable()
@@ -163,12 +163,7 @@ export class CursosService {
     if (data.precio < 0) throw new BadRequestException('Precio inválido');
     if (data.capacidad < 5) throw new BadRequestException('Capacidad mínima de 5');
 
-    // Asignación del id manualmente
-    const nuevo: Curso = {
-      ...data,
-      id: data.id, // El ID es proporcionado por el usuario
-      inscritos: 0,
-    };
+    const nuevo: Curso = { ...data, id: this.generarId(), inscritos: 0 };
     this.cursos.push(nuevo);
     return nuevo;
   }
@@ -190,5 +185,9 @@ export class CursosService {
     if (curso.inscritos >= curso.capacidad) throw new ConflictException('Curso sin cupos disponibles');
     curso.inscritos++;
     return curso;
+  }
+
+  private generarId(): string {
+    return (this.cursos.length + 1).toString(); 
   }
 }
